@@ -6,7 +6,12 @@
   "scripts": {
     "start": "npx -y serve . -l 3000"
   },
-  "keywords": ["birthday", "gift", "celebration", "interactive"],
+  "keywords": [
+    "birthday",
+    "gift",
+    "celebration",
+    "interactive"
+  ],
   "author": "",
   "license": "MIT"
 }
