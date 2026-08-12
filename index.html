@@ -1001,10 +1001,17 @@ Thank you for being such an irreplaceable part of my story.`,
       initAudioEngine();
       initBalloons();
 
+      // Trigger Instant Party Popper & Hearts Celebration Cannon on Page Load!
+      setTimeout(() => {
+        triggerPartyPopperBurst();
+      }, 250);
+
       // Begin Button Click Handler
       document.getElementById("btn-begin").addEventListener("click", () => {
         // Start background music / synthesized audio
         playAudio();
+        // Fire Party Popper Cannon on Begin Click!
+        triggerPartyPopperBurst();
         // Smooth scroll to birthday cake section
         document.getElementById("cake-section").scrollIntoView({ behavior: "smooth" });
       });
@@ -1111,7 +1118,7 @@ Thank you for being such an irreplaceable part of my story.`,
     }
 
     /* ==========================================================================
-       FX CANVAS (SMOKE PUFFS & GOLD SPARKLES)
+       FX CANVAS (SMOKE, SPARKLES, PARTY POPPER & HEARTS EXPLOSION)
        ========================================================================== */
     let fxCtx, fxCanvas;
     const activeParticles = [];
@@ -1132,31 +1139,104 @@ Thank you for being such an irreplaceable part of my story.`,
 
         for (let i = activeParticles.length - 1; i >= 0; i--) {
           const p = activeParticles[i];
+          
+          if (p.friction) {
+            p.vx *= p.friction;
+            p.vy *= p.friction;
+          }
+          if (p.gravity) {
+            p.vy += p.gravity;
+          }
+
           p.x += p.vx;
           p.y += p.vy;
           p.alpha -= p.decay;
-          p.radius += p.grow || 0;
 
-          if (p.alpha <= 0) {
+          if (p.vRot) {
+            p.rotation = (p.rotation || 0) + p.vRot;
+          }
+
+          if (p.alpha <= 0 || p.y > fxCanvas.height + 60) {
             activeParticles.splice(i, 1);
             continue;
           }
 
-          fxCtx.beginPath();
-          fxCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          fxCtx.fillStyle = p.color.replace("ALPHA", p.alpha.toFixed(2));
-          if (p.glow) {
-            fxCtx.shadowBlur = 10;
-            fxCtx.shadowColor = p.glow;
+          fxCtx.save();
+          fxCtx.globalAlpha = Math.max(0, p.alpha);
+          fxCtx.translate(p.x, p.y);
+          if (p.rotation) {
+            fxCtx.rotate(p.rotation);
           }
-          fxCtx.fill();
-          fxCtx.shadowBlur = 0;
+
+          if (p.emoji) {
+            fxCtx.font = `${p.size || 20}px serif`;
+            fxCtx.textAlign = "center";
+            fxCtx.textBaseline = "middle";
+            fxCtx.fillText(p.emoji, 0, 0);
+          } else if (p.shape === "rect") {
+            fxCtx.fillStyle = p.color || "#f6ad55";
+            fxCtx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+          } else {
+            fxCtx.beginPath();
+            fxCtx.arc(0, 0, (p.size || p.radius * 2) / 2, 0, Math.PI * 2);
+            fxCtx.fillStyle = (p.color || "rgba(246, 173, 85, ALPHA)").replace("ALPHA", p.alpha.toFixed(2));
+            if (p.glow) {
+              fxCtx.shadowBlur = 10;
+              fxCtx.shadowColor = p.glow;
+            }
+            fxCtx.fill();
+          }
+
+          fxCtx.restore();
         }
 
         requestAnimationFrame(renderFx);
       }
 
       renderFx();
+    }
+
+    // Party Popper & Hearts Celebration Explosion Cannon
+    function triggerPartyPopperBurst() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      // Cannon 1: Left Bottom
+      fireCannon(width * 0.1, height, Math.PI * -0.35, 110);
+      // Cannon 2: Right Bottom
+      fireCannon(width * 0.9, height, Math.PI * -0.65, 110);
+      // Cannon 3: Center Mid
+      setTimeout(() => {
+        fireCannon(width * 0.5, height * 0.5, Math.PI * -0.5, 90);
+      }, 200);
+    }
+
+    function fireCannon(originX, originY, baseAngle, count) {
+      const colors = ["#f6ad55", "#e5989b", "#c8b6ff", "#ffb5a7", "#fff4e6", "#fbd38d", "#e0aaff"];
+      const emojis = ["❤️", "💖", "✨", "💕", "🎉", "⭐", "🎈", "🌸"];
+
+      for (let i = 0; i < count; i++) {
+        const angle = baseAngle + (Math.random() - 0.5) * 1.1;
+        const speed = Math.random() * 16 + 7;
+        const isEmoji = Math.random() < 0.38;
+
+        activeParticles.push({
+          x: originX,
+          y: originY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          gravity: Math.random() * 0.16 + 0.08,
+          friction: 0.97,
+          rotation: Math.random() * Math.PI * 2,
+          vRot: (Math.random() - 0.5) * 0.25,
+          size: isEmoji ? Math.random() * 16 + 16 : Math.random() * 9 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          emoji: isEmoji ? emojis[Math.floor(Math.random() * emojis.length)] : null,
+          alpha: 1,
+          decay: Math.random() * 0.007 + 0.004,
+          shape: Math.random() > 0.5 ? "rect" : "circle"
+        });
+      }
     }
 
     // Smoke Puff Particles
