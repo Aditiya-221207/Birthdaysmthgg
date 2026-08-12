@@ -630,6 +630,99 @@
       50% { transform: scale(1.25); }
     }
 
+    /* ==========================================================================
+       FLOATING CELEBRATION BALLOONS
+       ========================================================================== */
+    #balloons-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 50;
+      overflow: hidden;
+    }
+
+    .floating-balloon {
+      position: absolute;
+      bottom: -100px;
+      width: 48px;
+      height: 62px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      pointer-events: auto;
+      cursor: pointer;
+      box-shadow: inset -6px -6px 15px rgba(0, 0, 0, 0.25), 0 8px 20px rgba(0, 0, 0, 0.3);
+      animation: floatUp 9s linear forwards;
+      transform-origin: bottom center;
+      display: flex;
+      justify-content: center;
+      user-select: none;
+      transition: transform 0.15s ease;
+    }
+
+    .floating-balloon:hover {
+      transform: scale(1.18);
+    }
+
+    /* Balloon knot & string */
+    .floating-balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -7px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 7px solid currentColor;
+    }
+
+    .floating-balloon::before {
+      content: '';
+      position: absolute;
+      bottom: -28px;
+      width: 2px;
+      height: 22px;
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .floating-balloon.popped {
+      animation: balloonPop 0.25s ease-out forwards !important;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      8% {
+        opacity: 0.95;
+      }
+      90% {
+        opacity: 0.95;
+      }
+      100% {
+        transform: translateY(-115vh) rotate(15deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes balloonPop {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.45);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(2.2);
+        opacity: 0;
+      }
+    }
+
     /* Mobile Responsiveness */
     @media (max-width: 768px) {
       .chat-bubble {
@@ -643,6 +736,9 @@
   </style>
 </head>
 <body>
+
+  <!-- Floating Celebration Balloons Container -->
+  <div id="balloons-container"></div>
 
   <!-- Fixed Fireflies & Floating Stars Engine Canvas -->
   <canvas id="fireflies-canvas"></canvas>
@@ -903,6 +999,7 @@ Thank you for being such an irreplaceable part of my story.`,
       initCakeSection();
       initGiftsSection();
       initAudioEngine();
+      initBalloons();
 
       // Begin Button Click Handler
       document.getElementById("btn-begin").addEventListener("click", () => {
@@ -1133,6 +1230,72 @@ Thank you for being such an irreplaceable part of my story.`,
           decay: Math.random() * 0.02 + 0.01
         });
       }
+    }
+
+    /* ==========================================================================
+       CELEBRATION BALLOONS ENGINE & POPPING MECHANIC
+       ========================================================================== */
+    function initBalloons() {
+      const container = document.getElementById("balloons-container");
+      if (!container) return;
+
+      const colors = [
+        { bg: "linear-gradient(135deg, #f6ad55 0%, #fbd38d 100%)", color: "#f6ad55" }, // Soft Gold
+        { bg: "linear-gradient(135deg, #e5989b 0%, #b5838d 100%)", color: "#e5989b" }, // Dusty Rose
+        { bg: "linear-gradient(135deg, #c8b6ff 0%, #e7c6ff 100%)", color: "#c8b6ff" }, // Soft Lavender
+        { bg: "linear-gradient(135deg, #ffb5a7 0%, #fbc4ab 100%)", color: "#ffb5a7" }, // Peach
+        { bg: "linear-gradient(135deg, #fff4e6 0%, #f6ad55 100%)", color: "#fff4e6" }  // Cream Gold
+      ];
+
+      // Initial batch on site load
+      for (let i = 0; i < 12; i++) {
+        setTimeout(() => createBalloon(container, colors), i * 350);
+      }
+
+      // Continuous gentle spawner
+      setInterval(() => {
+        if (container.children.length < 15) {
+          createBalloon(container, colors);
+        }
+      }, 2000);
+    }
+
+    function createBalloon(container, colors) {
+      const balloon = document.createElement("div");
+      balloon.className = "floating-balloon";
+      const theme = colors[Math.floor(Math.random() * colors.length)];
+      balloon.style.background = theme.bg;
+      balloon.style.color = theme.color;
+      balloon.style.left = `${Math.random() * 88 + 5}vw`;
+
+      const duration = Math.random() * 4 + 7;
+      const scale = Math.random() * 0.4 + 0.8;
+      balloon.style.animationDuration = `${duration}s`;
+      balloon.style.transform = `scale(${scale})`;
+
+      function pop(e) {
+        e.stopPropagation();
+        if (balloon.classList.contains("popped")) return;
+        balloon.classList.add("popped");
+
+        const rect = balloon.getBoundingClientRect();
+        triggerSparkleBurstAt(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+        setTimeout(() => {
+          if (balloon.parentNode) balloon.remove();
+        }, 250);
+      }
+
+      balloon.addEventListener("click", pop);
+      balloon.addEventListener("touchstart", pop, { passive: true });
+
+      container.appendChild(balloon);
+
+      setTimeout(() => {
+        if (balloon.parentNode === container) {
+          balloon.remove();
+        }
+      }, duration * 1000);
     }
 
     /* ==========================================================================
