@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Aditi! 🎉</title>
+  <meta name="description" content="A special birthday celebration website created with warm memories and wishes for Aditi.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & CSS CUSTOM PROPERTIES
+       Retheme easily by changing these color values!
+       ========================================================================== */
+    :root {
+      --bg-dark: #0d0a18;
+      --bg-surface: #161127;
+      --card-bg: rgba(255, 248, 240, 0.05);
+      --card-border: rgba(246, 173, 85, 0.2);
+      --card-hover: rgba(255, 248, 240, 0.09);
+      
+      --primary-amber: #f6ad55;
+      --accent-rose: #e5989b;
+      --accent-dusty: #b5838d;
+      --warm-cream: #fff4e6;
+      --soft-gold: #fbd38d;
+      --text-muted: #b9b1ca;
+      
+      --gold-glow: rgba(246, 173, 85, 0.35);
+      --rose-glow: rgba(229, 152, 155, 0.3);
+      --amber-glow-strong: rgba(246, 173, 85, 0.7);
+
+      --font-script: 'Sacramento', cursive;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+
+      --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Reset & Base Styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: var(--font-sans);
+      background-color: var(--bg-dark);
+      color: var(--warm-cream);
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      line-height: 1.6;
+      position: relative;
+      background: radial-gradient(circle at 50% 20%, #1d1633 0%, var(--bg-dark) 70%);
+      background-attachment: fixed;
+    }
+
+    /* Fixed Background Canvas for Fireflies / Floating Stars */
+    #fireflies-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Particle Canvas for Smoke & Sparkles overlay */
+    #fx-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* Typography Utilities */
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      color: var(--warm-cream);
+      line-height: 1.3;
+    }
+
+    .font-script {
+      font-family: var(--font-script);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--warm-cream) 20%, var(--soft-gold) 60%, var(--accent-rose) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Layout Containers */
+    .section-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-header h2 {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 550px;
+      margin: 0 auto;
+    }
+
+    /* ==========================================================================
+       1. HERO / LANDING SECTION
+       ========================================================================== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1.2rem;
+      border-radius: var(--radius-full);
+      background: rgba(246, 173, 85, 0.1);
+      border: 1px solid var(--card-border);
+      color: var(--primary-amber);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(8px);
+      animation: pulseGlow 3s infinite alternate;
+    }
+
+    .hero-title {
+      font-family: var(--font-script);
+      font-size: clamp(3.5rem, 10vw, 6.5rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      color: var(--warm-cream);
+      text-shadow: 0 0 25px var(--gold-glow);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    .btn-begin {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2.2rem;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, #f6ad55 0%, #e5989b 100%);
+      color: #0d0a18;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 1.1rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 25px var(--gold-glow);
+      transition: var(--transition-bounce);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-begin:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 15px 35px var(--amber-glow-strong);
+    }
+
+    .btn-begin:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      opacity: 0.7;
+      animation: bounceDown 2s infinite;
+    }
+
+    /* ==========================================================================
+       2. INTERACTIVE BIRTHDAY CAKE SECTION
+       ========================================================================== */
+    #cake-section {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem;
+      position: relative;
+    }
+
+    .cake-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      margin-bottom: 2.5rem;
+    }
+
+    /* SVG Cake Base & Details */
+    .cake-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
+    }
+
+    /* Candle Flame Styles */
+    .candles-group {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: space-around;
+      width: 180px;
+      z-index: 10;
+    }
+
+    .candle-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: transform 0.2s;
+    }
+
+    .candle-item:hover {
+      transform: scale(1.1);
+    }
+
+    .candle-stick {
+      width: 10px;
+      height: 45px;
+      background: repeating-linear-gradient(
+        45deg,
+        #f6ad55,
+        #f6ad55 6px,
+        #fff4e6 6px,
+        #fff4e6 12px
+      );
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .candle-flame {
+      width: 16px;
+      height: 24px;
+      background: radial-gradient(ellipse at bottom, #ffe600 0%, #ff6600 50%, rgba(255,0,0,0) 100%);
+      border-radius: 50% 50% 35% 35%;
+      margin-bottom: 2px;
+      box-shadow: 0 0 15px #ff9900, 0 0 25px #ffe600;
+      animation: flameFlicker 1.2s infinite alternate ease-in-out;
+      transform-origin: center bottom;
+      transition: opacity 0.4s, transform 0.4s;
+    }
+
+    .candle-item.extinguished .candle-flame {
+      opacity: 0;
+      transform: scale(0);
+      pointer-events: none;
+    }
+
+    /* Wish Toast Card (Revealed when all candles out) */
+    .wish-toast {
+      background: rgba(246, 173, 85, 0.12);
+      border: 1px solid var(--primary-amber);
+      padding: 1.5rem 2rem;
+      border-radius: var(--radius-md);
+      text-align: center;
+      max-width: 500px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px var(--gold-glow);
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      pointer-events: none;
+      transition: var(--transition-bounce);
+    }
+
+    .wish-toast.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .wish-toast h3 {
+      color: var(--soft-gold);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .wish-toast p {
+      color: var(--warm-cream);
+      font-size: 1.05rem;
+    }
+
+    .candle-counter {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* ==========================================================================
+       3. INTERACTIVE SURPRISE GIFTS & MESSAGES SECTION
+       ========================================================================== */
+    #gifts-section {
+      position: relative;
+    }
+
+    .gifts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.75rem;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .gift-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: var(--transition-bounce);
+      overflow: hidden;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gift-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: var(--primary-amber);
+      box-shadow: 0 15px 35px var(--gold-glow);
+    }
+
+    .gift-box-icon {
+      font-size: 3.5rem;
+      margin-bottom: 0.75rem;
+      animation: giftBounce 2.2s infinite ease-in-out;
+      transition: transform 0.4s ease;
+    }
+
+    .gift-card:hover .gift-box-icon {
+      transform: scale(1.15) rotate(6deg);
+    }
+
+    .gift-title {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--soft-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .gift-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.75rem;
+      border-radius: var(--radius-full);
+      background: rgba(246, 173, 85, 0.12);
+      color: var(--primary-amber);
+      margin-bottom: 0.75rem;
+    }
+
+    .gift-hint {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      opacity: 0.85;
+    }
+
+    /* Opened State */
+    .gift-card.opened {
+      background: linear-gradient(145deg, rgba(246, 173, 85, 0.15) 0%, rgba(229, 152, 155, 0.12) 100%);
+      border-color: var(--primary-amber);
+      cursor: default;
+    }
+
+    .gift-card.opened .gift-box-icon {
+      animation: none;
+      transform: scale(0.9);
+    }
+
+    .gift-message {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--warm-cream);
+      margin-top: 0.5rem;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: var(--transition-bounce);
+      display: none;
+    }
+
+    .gift-card.opened .gift-message {
+      opacity: 1;
+      transform: translateY(0);
+      display: block;
+    }
+
+    .gift-card.opened .gift-hint {
+      display: none;
+    }
+
+    @keyframes giftBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+
+
+    /* ==========================================================================
+       5. HEARTFELT MESSAGE SECTION
+       ========================================================================== */
+    #letter-section {
+      display: flex;
+      justify-content: center;
+    }
+
+    .letter-card {
+      width: 100%;
+      max-width: 680px;
+      background: linear-gradient(145deg, rgba(255, 248, 240, 0.07) 0%, rgba(229, 152, 155, 0.05) 100%);
+      border: 1px solid rgba(246, 173, 85, 0.25);
+      border-radius: var(--radius-lg);
+      padding: clamp(2rem, 5vw, 3.5rem);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 30px rgba(246, 173, 85, 0.05);
+      position: relative;
+    }
+
+    /* Wax Seal Accent */
+    .wax-seal {
+      position: absolute;
+      top: -20px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, #b5838d 0%, #6b3a43 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--warm-cream);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      font-family: var(--font-serif);
+      font-weight: bold;
+      font-size: 1.2rem;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .letter-header {
+      font-family: var(--font-script);
+      font-size: 2.8rem;
+      color: var(--soft-gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .letter-body {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: var(--warm-cream);
+      white-space: pre-line;
+      margin-bottom: 2rem;
+    }
+
+    .letter-signature {
+      font-family: var(--font-script);
+      font-size: 2.2rem;
+      color: var(--accent-rose);
+      text-align: right;
+    }
+
+    /* ==========================================================================
+       6. AUDIO CONTROLS & FLOATING TOGGLE
+       ========================================================================== */
+    .audio-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(22, 17, 39, 0.85);
+      border: 1px solid var(--card-border);
+      color: var(--primary-amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      transition: var(--transition-bounce);
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.1);
+      border-color: var(--primary-amber);
+    }
+
+    .eq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+    }
+
+    .eq-bar {
+      width: 3px;
+      background-color: var(--primary-amber);
+      border-radius: 2px;
+      height: 4px;
+      transition: height 0.2s;
+    }
+
+    .audio-btn.playing .eq-bar:nth-child(1) { animation: eqPulse 0.8s infinite alternate; }
+    .audio-btn.playing .eq-bar:nth-child(2) { animation: eqPulse 1.2s infinite alternate 0.2s; }
+    .audio-btn.playing .eq-bar:nth-child(3) { animation: eqPulse 0.6s infinite alternate 0.4s; }
+
+    /* ==========================================================================
+       7. FOOTER
+       ========================================================================== */
+    footer {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .heart-icon {
+      display: inline-block;
+      color: var(--accent-rose);
+      animation: heartBeat 1.5s infinite ease-in-out;
+      margin: 0 0.2rem;
+    }
+
+    /* Keyframe Animations */
+    @keyframes flameFlicker {
+      0% { transform: scale(1) rotate(-2deg); }
+      50% { transform: scale(1.08) rotate(2deg); }
+      100% { transform: scale(0.95) rotate(-1deg); }
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 10px rgba(246, 173, 85, 0.1); }
+      100% { box-shadow: 0 0 25px rgba(246, 173, 85, 0.4); }
+    }
+
+    @keyframes bounceDown {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+      60% { transform: translateY(-4px); }
+    }
+
+    @keyframes eqPulse {
+      0% { height: 4px; }
+      100% { height: 18px; }
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .chat-bubble {
+        max-width: 90%;
+      }
+      .audio-btn {
+        bottom: 1.25rem;
+        right: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Fireflies & Floating Stars Engine Canvas -->
+  <canvas id="fireflies-canvas"></canvas>
+
+  <!-- Particle Overlays Canvas (Smoke & Sparkles) -->
+  <canvas id="fx-canvas"></canvas>
+
+  <!-- Background Music Audio Element -->
+  <!-- REPLACE: Change src="assets/music.mp3" to your preferred music track path -->
+  <audio id="bg-music" loop src="assets/music.mp3"></audio>
+
+  <!-- Floating Audio Mute/Unmute Toggle -->
+  <button id="audio-toggle" class="audio-btn" aria-label="Toggle background music">
+    <div class="eq-bars">
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+    </div>
+  </button>
+
+  <!-- ==========================================================================
+     1. HERO / LANDING SECTION
+     ========================================================================== -->
+  <section id="hero">
+    <div class="hero-badge">A Special Birthday Memory Box ✨</div>
+    
+    <!-- REPLACE: Hero Title -->
+    <h1 class="hero-title gradient-text" id="hero-title-text">Happy Birthday Aditi!</h1>
+    
+    <!-- REPLACE: Hero Subtitle -->
+    <p class="hero-subtitle" id="hero-subtitle-text">
+      A little corner of the internet saved just for our memories, inside jokes, and golden school days.
+    </p>
+    
+    <button class="btn-begin" id="btn-begin">
+      <span>Click to Begin</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </button>
+
+    <div class="scroll-hint">
+      <span>Scroll down to explore</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+     2. INTERACTIVE BIRTHDAY CAKE SECTION
+     ========================================================================== -->
+  <section id="cake-section" class="section-container">
+    <div class="section-header">
+      <h2>Make a Wish & Blow the Candles 🎂</h2>
+      <p>Click on each candle flame to extinguish it!</p>
+    </div>
+
+    <div class="cake-container">
+      <!-- Lit Candles Group -->
+      <div class="candles-group" id="candles-container">
+        <!-- 5 Interactive Candles rendered dynamically or styled -->
+        <div class="candle-item" data-index="0">
+          <div class="candle-flame"></div>
+          <div class="candle-stick"></div>
+        </div>
+        <div class="candle-item" data-index="1">
+          <div class="candle-flame"></div>
+          <div class="candle-stick"></div>
+        </div>
+        <div class="candle-item" data-index="2">
+          <div class="candle-flame"></div>
+          <div class="candle-stick"></div>
+        </div>
+        <div class="candle-item" data-index="3">
+          <div class="candle-flame"></div>
+          <div class="candle-stick"></div>
+        </div>
+        <div class="candle-item" data-index="4">
+          <div class="candle-flame"></div>
+          <div class="candle-stick"></div>
+        </div>
+      </div>
+
+      <!-- SVG Hand-Drawn Tiered Birthday Cake -->
+      <svg class="cake-svg" viewBox="0 0 280 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Plate -->
+        <ellipse cx="140" cy="180" rx="130" ry="15" fill="rgba(255,255,255,0.12)" stroke="var(--card-border)" stroke-width="2"/>
+        <ellipse cx="140" cy="178" rx="115" ry="10" fill="rgba(246,173,85,0.08)"/>
+
+        <!-- Bottom Tier -->
+        <rect x="35" y="115" width="210" height="55" rx="8" fill="#3a274c"/>
+        <path d="M35 125 C 60 140, 90 120, 140 135 C 190 120, 220 140, 245 125 L 245 115 L 35 115 Z" fill="#e5989b"/>
+        <!-- Bottom Tier Frosting Drops -->
+        <circle cx="65" cy="150" r="4" fill="#fbd38d"/>
+        <circle cx="115" cy="155" r="4" fill="#e5989b"/>
+        <circle cx="165" cy="152" r="4" fill="#fbd38d"/>
+        <circle cx="215" cy="150" r="4" fill="#e5989b"/>
+
+        <!-- Middle Tier -->
+        <rect x="60" y="70" width="160" height="45" rx="6" fill="#4a3160"/>
+        <path d="M60 80 C 85 92, 115 78, 140 88 C 165 78, 195 92, 220 80 L 220 70 L 60 70 Z" fill="#f6ad55"/>
+
+        <!-- Top Tier -->
+        <rect x="85" y="35" width="110" height="35" rx="5" fill="#5c3b77"/>
+        <path d="M85 43 C 105 52, 130 40, 140 48 C 150 40, 175 52, 195 43 L 195 35 L 85 35 Z" fill="#fff4e6"/>
+      </svg>
+    </div>
+
+    <!-- Candle Counter Tag -->
+    <div class="candle-counter" id="candle-counter">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span id="counter-text">5 candles remaining</span>
+    </div>
+
+    <!-- Revealed Wish Toast Box -->
+    <div class="wish-toast" id="wish-toast">
+      <h3>✨ Wish Made! ✨</h3>
+      <!-- REPLACE: Congratulatory line once all candles are extinguished -->
+      <p id="wish-toast-text">May every single wish you made today take flight, Aditi!</p>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+     3. INTERACTIVE SURPRISE GIFTS & MESSAGES SECTION
+     ========================================================================== -->
+  <section id="gifts-section" class="section-container">
+    <div class="section-header">
+      <h2>Unwrap Your Birthday Surprises 🎁</h2>
+      <p>Tap on each gift box to reveal special wishes and notes saved just for you, Aditi!</p>
+    </div>
+
+    <div class="gifts-grid" id="gifts-grid-container">
+      <!-- Gift Card 1 -->
+      <div class="gift-card" data-gift="0">
+        <div class="gift-box-icon">🎁</div>
+        <span class="gift-tag">Surprise #1</span>
+        <h3 class="gift-title">A Lifetime of Laughter</h3>
+        <p class="gift-hint">Tap to unwrap ✨</p>
+        <p class="gift-message">"For all the endless giggles, inside jokes, and silly moments that made school days so bright. May your year be filled with pure joy!"</p>
+      </div>
+
+      <!-- Gift Card 2 -->
+      <div class="gift-card" data-gift="1">
+        <div class="gift-box-icon">🎀</div>
+        <span class="gift-tag">Surprise #2</span>
+        <h3 class="gift-title">Unconditional Warmth</h3>
+        <p class="gift-hint">Tap to unwrap ✨</p>
+        <p class="gift-message">"You are a true valuable gem in my life who brings so much light, positivity, and beauty everywhere you go."</p>
+      </div>
+
+      <!-- Gift Card 3 -->
+      <div class="gift-card" data-gift="2">
+        <div class="gift-box-icon">✨</div>
+        <span class="gift-tag">Surprise #3</span>
+        <h3 class="gift-title">Infinite Success & Peace</h3>
+        <p class="gift-hint">Tap to unwrap ✨</p>
+        <p class="gift-message">"Wishing you grand victories, quiet peaceful moments, and all the success your ambitious heart dreams of!"</p>
+      </div>
+
+      <!-- Gift Card 4 -->
+      <div class="gift-card" data-gift="3">
+        <div class="gift-box-icon">💖</div>
+        <span class="gift-tag">Surprise #4</span>
+        <h3 class="gift-title">Forever Bond</h3>
+        <p class="gift-hint">Tap to unwrap ✨</p>
+        <p class="gift-message">"To a friendship that started as classmates and became an irreplaceable bond. Thank you for making my life a hell of a lot more beautiful!"</p>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ==========================================================================
+     5. HEARTFELT MESSAGE SECTION
+     ========================================================================== -->
+  <section id="letter-section" class="section-container">
+    <div class="letter-card">
+      <div class="wax-seal">A</div>
+      <div class="letter-header">Dearest Aditi,</div>
+      
+      <!-- REPLACE: Heartfelt Birthday Letter -->
+      <div class="letter-body" id="letter-body-text">
+Happy Birthday!
+
+Looking back at all our years of friendship — from classmates to like close friends a great a valuable gem in my life, you made my life a hell lot of beautiful — I feel incredibly lucky to have you in my corner.
+
+You have a rare kind of warmth that makes everyone around you feel grounded, happy, and understood. No matter how many months pass or how busy life gets, talking to you always feels like stepping right back home.
+
+On your special day, I wish you endless joy, quiet moments of wonder, and all the success and peace your heart desires. May this year bring you closer to every dream you've quietly held onto.
+
+Thank you for being such an irreplaceable part of my story.
+      </div>
+
+      <!-- REPLACE: Signature -->
+      <div class="letter-signature" id="letter-signature-text">
+        With love always, <br>Aditya
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+     7. FOOTER
+     ========================================================================== -->
+  <footer>
+    <p>Made with care by <strong id="footer-author-text">Aditya</strong> <span class="heart-icon">♥</span> Forever Childhood Friends</p>
+  </footer>
+
+  <!-- ==========================================================================
+     JAVASCRIPT LOGIC & CONFIGURATION
+     ========================================================================== -->
+  <script>
+    /* ==========================================================================
+       CONFIG OBJECT
+       Personalize everything here in ONE place!
+       ========================================================================== */
+    const CONFIG = {
+      friendName: "Aditi",
+      authorName: "Aditya",
+      heroTitle: "Happy Birthday Aditi!",
+      heroSubtitle: "A little corner of the internet saved just for our memories, inside jokes, and golden school days.",
+      cakeWishToast: "Wish made! May every single dream of yours take flight this year, Aditi. ✨",
+      
+      // Interactive Surprise Gift Boxes & Wishes
+      giftSurprises: [
+        { tag: "Surprise #1", title: "A Lifetime of Laughter", icon: "🎁", message: "For all the endless giggles, inside jokes, and silly moments that made school days so bright. May your year be filled with pure joy!" },
+        { tag: "Surprise #2", title: "Unconditional Warmth", icon: "🎀", message: "You are a true valuable gem in my life who brings so much light, positivity, and beauty everywhere you go." },
+        { tag: "Surprise #3", title: "Infinite Success & Peace", icon: "✨", message: "Wishing you grand victories, quiet peaceful moments, and all the success your ambitious heart dreams of!" },
+        { tag: "Surprise #4", title: "Forever Bond", icon: "💖", message: "To a friendship that started as classmates and became an irreplaceable bond. Thank you for making my life a hell of a lot more beautiful!" }
+      ],
+
+      // Heartfelt Message Letter Text
+      letterMessage: `Happy Birthday!
+
+Looking back at all our years of friendship — from classmates to like close friends a great a valuable gem in my life, you made my life a hell lot of beautiful — I feel incredibly lucky to have you in my corner.
+
+You have a rare kind of warmth that makes everyone around you feel grounded, happy, and understood. No matter how many months pass or how busy life gets, talking to you always feels like stepping right back home.
+
+On your special day, I wish you endless joy, quiet moments of wonder, and all the success and peace your heart desires. May this year bring you closer to every dream you've quietly held onto.
+
+Thank you for being such an irreplaceable part of my story.`,
+
+      audioPath: "assets/music.mp3"
+    };
+
+    /* ==========================================================================
+       DOM INITIALIZATION & DATA BINDING
+       ========================================================================== */
+    document.addEventListener("DOMContentLoaded", () => {
+      // Bind Config Values to DOM elements
+      if (CONFIG.heroTitle) document.getElementById("hero-title-text").textContent = CONFIG.heroTitle;
+      if (CONFIG.heroSubtitle) document.getElementById("hero-subtitle-text").textContent = CONFIG.heroSubtitle;
+      if (CONFIG.cakeWishToast) document.getElementById("wish-toast-text").textContent = CONFIG.cakeWishToast;
+      if (CONFIG.letterMessage) document.getElementById("letter-body-text").textContent = CONFIG.letterMessage;
+      if (CONFIG.authorName) {
+        document.getElementById("letter-signature-text").innerHTML = `With love always,<br>${CONFIG.authorName}`;
+        document.getElementById("footer-author-text").textContent = CONFIG.authorName;
+      }
+
+      initFireflies();
+      initFxCanvas();
+      initCakeSection();
+      initGiftsSection();
+      initAudioEngine();
+
+      // Begin Button Click Handler
+      document.getElementById("btn-begin").addEventListener("click", () => {
+        // Start background music / synthesized audio
+        playAudio();
+        // Smooth scroll to birthday cake section
+        document.getElementById("cake-section").scrollIntoView({ behavior: "smooth" });
+      });
+    });
+
+    /* ==========================================================================
+       1. FIREFLIES / FLOATING STARS ENGINE (BACKGROUND CANVAS)
+       ========================================================================== */
+    function initFireflies() {
+      const canvas = document.getElementById("fireflies-canvas");
+      const ctx = canvas.getContext("2d");
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener("resize", () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const numParticles = Math.min(Math.floor(width * 0.04), 45);
+      const particles = [];
+
+      for (let i = 0; i < numParticles; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 2.2 + 0.8,
+          color: Math.random() > 0.5 ? "rgba(246, 173, 85, " : "rgba(255, 244, 230, ",
+          alpha: Math.random() * 0.7 + 0.2,
+          speedX: (Math.random() - 0.5) * 0.4,
+          speedY: (Math.random() - 0.5) * 0.4 - 0.2,
+          pulse: Math.random() * 0.02 + 0.005
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        particles.forEach((p) => {
+          p.x += p.speedX;
+          p.y += p.speedY;
+
+          // Pulse opacity gently
+          p.alpha += Math.sin(Date.now() * p.pulse) * 0.005;
+          if (p.alpha < 0.1) p.alpha = 0.1;
+          if (p.alpha > 0.85) p.alpha = 0.85;
+
+          // Wrap edges
+          if (p.x < 0) p.x = width;
+          if (p.x > width) p.x = 0;
+          if (p.y < 0) p.y = height;
+          if (p.y > height) p.y = 0;
+
+          // Draw Glowing Firefly
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color + p.alpha + ")";
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = "#f6ad55";
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+
+    /* ==========================================================================
+       2. CAKE & CANDLE EXTINGUISH MECHANICS
+       ========================================================================== */
+    let candlesLeft = 5;
+
+    function initCakeSection() {
+      const candles = document.querySelectorAll(".candle-item");
+      const counterText = document.getElementById("counter-text");
+
+      candles.forEach((candle) => {
+        candle.addEventListener("click", (e) => {
+          if (candle.classList.contains("extinguished")) return;
+
+          // Extinguish Candle
+          candle.classList.add("extinguished");
+          candlesLeft--;
+
+          // Trigger Smoke Puff Animation at candle flame position
+          const rect = candle.getBoundingClientRect();
+          createSmokePuff(rect.left + rect.width / 2, rect.top);
+
+          // Update Counter
+          if (candlesLeft > 0) {
+            counterText.textContent = `${candlesLeft} candle${candlesLeft > 1 ? 's' : ''} remaining`;
+          } else {
+            counterText.textContent = "All candles extinguished!";
+            // Reveal Wish Toast & Sparkles Burst
+            setTimeout(() => {
+              document.getElementById("wish-toast").classList.add("show");
+              triggerSparkleBurst();
+            }, 300);
+          }
+        });
+      });
+    }
+
+    /* ==========================================================================
+       FX CANVAS (SMOKE PUFFS & GOLD SPARKLES)
+       ========================================================================== */
+    let fxCtx, fxCanvas;
+    const activeParticles = [];
+
+    function initFxCanvas() {
+      fxCanvas = document.getElementById("fx-canvas");
+      fxCtx = fxCanvas.getContext("2d");
+      fxCanvas.width = window.innerWidth;
+      fxCanvas.height = window.innerHeight;
+
+      window.addEventListener("resize", () => {
+        fxCanvas.width = window.innerWidth;
+        fxCanvas.height = window.innerHeight;
+      });
+
+      function renderFx() {
+        fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+
+        for (let i = activeParticles.length - 1; i >= 0; i--) {
+          const p = activeParticles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.alpha -= p.decay;
+          p.radius += p.grow || 0;
+
+          if (p.alpha <= 0) {
+            activeParticles.splice(i, 1);
+            continue;
+          }
+
+          fxCtx.beginPath();
+          fxCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          fxCtx.fillStyle = p.color.replace("ALPHA", p.alpha.toFixed(2));
+          if (p.glow) {
+            fxCtx.shadowBlur = 10;
+            fxCtx.shadowColor = p.glow;
+          }
+          fxCtx.fill();
+          fxCtx.shadowBlur = 0;
+        }
+
+        requestAnimationFrame(renderFx);
+      }
+
+      renderFx();
+    }
+
+    // Smoke Puff Particles
+    function createSmokePuff(x, y) {
+      for (let i = 0; i < 14; i++) {
+        activeParticles.push({
+          x: x + (Math.random() - 0.5) * 10,
+          y: y,
+          vx: (Math.random() - 0.5) * 0.8,
+          vy: -Math.random() * 1.5 - 0.5,
+          radius: Math.random() * 4 + 3,
+          grow: 0.3,
+          color: "rgba(200, 190, 210, ALPHA)",
+          alpha: 0.7,
+          decay: 0.015
+        });
+      }
+    }
+
+    // Gold Sparkles Burst (When all candles out)
+    function triggerSparkleBurst() {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight * 0.45;
+
+      for (let i = 0; i < 80; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 6 + 2;
+        activeParticles.push({
+          x: centerX,
+          y: centerY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.5,
+          radius: Math.random() * 3 + 1.5,
+          color: Math.random() > 0.5 ? "rgba(246, 173, 85, ALPHA)" : "rgba(255, 244, 230, ALPHA)",
+          glow: "#f6ad55",
+          alpha: 1,
+          decay: Math.random() * 0.015 + 0.008
+        });
+      }
+    }
+
+    /* ==========================================================================
+       3. INTERACTIVE GIFTS SECTION HANDLER
+       ========================================================================== */
+    function initGiftsSection() {
+      const giftCards = document.querySelectorAll(".gift-card");
+      giftCards.forEach((card) => {
+        card.addEventListener("click", () => {
+          if (!card.classList.contains("opened")) {
+            card.classList.add("opened");
+            const rect = card.getBoundingClientRect();
+            triggerSparkleBurstAt(rect.left + rect.width / 2, rect.top + rect.height / 2);
+          }
+        });
+      });
+    }
+
+    function triggerSparkleBurstAt(x, y) {
+      for (let i = 0; i < 30; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 4 + 1.5;
+        activeParticles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1,
+          radius: Math.random() * 2.5 + 1,
+          color: Math.random() > 0.5 ? "rgba(246, 173, 85, ALPHA)" : "rgba(229, 152, 155, ALPHA)",
+          glow: "#f6ad55",
+          alpha: 1,
+          decay: Math.random() * 0.02 + 0.01
+        });
+      }
+    }
+
+    /* ==========================================================================
+       4. AUDIO ENGINE & SYNTHESIZER FALLBACK
+       ========================================================================== */
+    let audioContext, isAudioPlaying = false;
+    const audioBtn = document.getElementById("audio-toggle");
+    const bgAudio = document.getElementById("bg-music");
+
+    function initAudioEngine() {
+      audioBtn.addEventListener("click", () => {
+        if (isAudioPlaying) {
+          pauseAudio();
+        } else {
+          playAudio();
+        }
+      });
+    }
+
+    function playAudio() {
+      // Attempt HTML Audio play first
+      bgAudio.play()
+        .then(() => {
+          isAudioPlaying = true;
+          audioBtn.classList.add("playing");
+        })
+        .catch(() => {
+          // If HTML audio file missing or blocked, trigger Web Audio API Ambient Synthesizer
+          startAmbientSynth();
+          isAudioPlaying = true;
+          audioBtn.classList.add("playing");
+        });
+    }
+
+    function pauseAudio() {
+      bgAudio.pause();
+      stopAmbientSynth();
+      isAudioPlaying = false;
+      audioBtn.classList.remove("playing");
+    }
+
+    /* Web Audio API Synthesizer Fallback (So music plays even without MP3 file!) */
+    let synthTimer = null;
+
+    function startAmbientSynth() {
+      if (synthTimer) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!audioContext) audioContext = new AudioCtx();
+        if (audioContext.state === "suspended") audioContext.resume();
+
+        // Warm Ambient Chord Frequencies (C-Major7 & F-Major7 harmonics)
+        const notes = [261.63, 329.63, 392.00, 493.88, 523.25, 659.25];
+        let noteIdx = 0;
+
+        function playChordNote() {
+          if (!isAudioPlaying) return;
+          const osc = audioContext.createOscillator();
+          const gain = audioContext.createGain();
+
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(notes[noteIdx % notes.length], audioContext.currentTime);
+
+          // Gentle Attack & Decay Envelope
+          gain.gain.setValueAtTime(0.001, audioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.08, audioContext.currentTime + 1.2);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 4.5);
+
+          osc.connect(gain);
+          gain.connect(audioContext.destination);
+
+          osc.start();
+          osc.stop(audioContext.currentTime + 4.6);
+
+          noteIdx = (noteIdx + 1) % notes.length;
+        }
+
+        playChordNote();
+        synthTimer = setInterval(playChordNote, 2200);
+      } catch (e) {
+        console.log("Web Audio fallback initialized.");
+      }
+    }
+
+    function stopAmbientSynth() {
+      if (synthTimer) {
+        clearInterval(synthTimer);
+        synthTimer = null;
+      }
+    }
+  </script>
+</body>
+</html>

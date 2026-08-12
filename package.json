@@ -1,0 +1,12 @@
+{
+  "name": "aditi-birthday-website",
+  "version": "1.0.0",
+  "description": "A warm, intimate single-file birthday celebration website for Aditi",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx -y serve . -l 3000"
+  },
+  "keywords": ["birthday", "gift", "celebration", "interactive"],
+  "author": "",
+  "license": "MIT"
+}
